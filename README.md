@@ -2,7 +2,7 @@
 
 Este repositorio contiene código fuente para backend implementado con Python, carpeta con notebooks del entrenamiento de los modelos YOLO, estos no son relevantes para el levantameinto de la aplicación con la API son una muestra de los entrenamientos y por ultimo contiene el frontend desarrollada con Next.js
 
-## 🧠 Backend
+## Backend
 
 ### Requisitos Previos
 
@@ -38,7 +38,7 @@ Este repositorio contiene código fuente para backend implementado con Python, c
    http://localhost:8000
 
 
-## 🧠 Frontend
+## Frontend
 
 ### Requisitos Previos
 
