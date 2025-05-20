@@ -25,28 +25,12 @@ const Home = () => {
   }, []);
 
   const recognitionVocice = () => {
-    const recognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-    if (recognition) {
-      setVoiceRecognitionActive(true);
-      recognitionInst = new recognition();
-      recognitionInst.continuous = true;
-      recognitionInst.lang = "es-ES";
-      recognitionInst.stop();
-      if (typeof recognitionInst.start === 'function') {
-        recognitionInst.onresult = voiceHandle;
-
-        recognitionInst.onend = () => {
-          if (voiceRecognitionActive) {
-            recognitionInst.start();
-          }
-        };
-        recognitionInst.start();
-      } else {
-        alert('La función start no está disponible en este navegador.');
+      if (prediction != 'Detectando') {
+              speakText( prediction == 'No Detectado' ? 'No Detectado':`${prediction} con un ${confianza} % de confianza.`);
+      }else{
+              speakText( 'No se ha realizado ninguna detección.');
       }
-    } else {
-      alert('La funcionalidad de reconocimiento de voz no es compatible con este navegador.');
-    }
+
   };
 
   const voiceHandle = (event) => {
@@ -121,54 +105,55 @@ const Home = () => {
 
   };
 
-  // const speakText = (text) => {
-  //   const synth = window.speechSynthesis;
-  //   synth.cancel();
-  //   const utterance = new SpeechSynthesisUtterance(text);
-  //   synth.speak(utterance);
-  // };
+  
 
   const speakText = (text) => {
     const synth = window.speechSynthesis;
     synth.cancel();
     const utterance = new SpeechSynthesisUtterance(text);
-    utterance.lang = 'es-419'; // Español Latinoamericano
+    utterance.lang = 'es-419'; 
     synth.speak(utterance);
   };
   
 
   return (
-    <div style={{ textAlign: 'center' }}>
-        <h1 className='black'>Detector de Denominación de Billetes y Monedas Bolivianas</h1>
-      <div className="flex items-center justify-center h-screen bg-gray-100">
-        <div>
-
-        <video
-          ref={videoRef}
-          autoPlay
-          playsInline
-          muted
-          className='pred-video'
-        />
-        </div>
     
+    <div className="flex items-center justify-center min-h-screen ">
+      <div className="w-[700px]  shadow-md border border-gray-300 rounded-lg">
+        <h1 className="text-center font-bold text-lg mb-4">
+          Detección de denominación de <br /> Billetes y Monedas Bolivianas
+        </h1>
+
+        <div className=" rounded-lg overflow-hidden">
+          <video
+            ref={videoRef}
+            autoPlay
+            playsInline
+            muted
+            className="w-full h-150 object-cover"
+          />
+        </div>
+
+        <div className="text-center text-sm">
+          <p className="mb-1">
+            <strong>Detección:</strong> {prediction}
+          </p>
+          <p className="mb-3">
+            <strong>Porcentaje de Confianza:</strong> {confianza}
+          </p>
+        </div>
+
+        <div className="flex justify-center gap-4 mb-2">
+          <button  onClick={imageCapture} disabled={voiceRecognitionActive}>
+            <FaCamera size={30} />
+          </button>
+          <button  onClick={() => recognitionVocice()}  disabled={voiceRecognitionActive}>
+            <FaMicrophone size={30} />
+          </button>
+        </div>
+      </div>
     </div>
-      <p>
-      {prediction && <label className='pred-text'>Predicción: {prediction}</label>}
-      </p>
-      <p>
-      {confianza && <label className='pred-text'>Nivel de Confianza: {confianza}</label>}
-      </p>
-      <button className="icon-button" onClick={imageCapture} disabled={voiceRecognitionActive}>
-        <FaCamera className="icon" size={35} />
-      </button>
-      <button className="icon-button" onClick={() => recognitionVocice()} disabled={voiceRecognitionActive}>
-        <FaMicrophone className="icon" size={35} />
-      </button>
-      <button className="icon-button" onClick={() => setVoiceRecognitionActive(false)} disabled={!voiceRecognitionActive}>
-        <FaStop className="icon" size={35} />
-      </button>
-    </div>
+
   );
 };
 

@@ -9,7 +9,6 @@ app = FastAPI()
 # Configura CORS
 origins = [
     "http://localhost:3000",  # Frontend en el puerto 3000
-    # Puedes agregar más orígenes si lo necesitas
 ]
 
 app.add_middleware(
